@@ -17,7 +17,8 @@
       "ES7"
     ]
   },
-  "include": [
-    "**/*.ts"
+  "include": ["src/**/*"],
+  "exclude": [
+    "test/**/*.ts"
   ]
 }

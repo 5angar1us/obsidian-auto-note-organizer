@@ -1,0 +1,7 @@
+{
+    "require": "./register.mjs",
+    "reporter": "list",
+    "extension": ["ts"],
+    "watch-extensions": ["ts"],
+    "spec": "tests/**/*.test.ts"
+  }

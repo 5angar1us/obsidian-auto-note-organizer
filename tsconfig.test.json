@@ -16,8 +16,9 @@
         "ES6",
         "ES7"
       ],
-      "types": ["jest"]
+      "types": ["jest"],
+      "esModuleInterop": true // добавлено
     },
     "include": ["tests/**/*"],
     "exclude": ["node_modules"]
-  }
+}

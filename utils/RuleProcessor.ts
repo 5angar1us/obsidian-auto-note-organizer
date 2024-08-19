@@ -12,6 +12,26 @@ export interface FileMetadata {
   tags: string[];
 }
 
+export function parseTest(input: string): { parameter: string, value: string } {
+    
+  // parse {{ something[else], something[653,35] }}
+  // /^(\w+)\[([0-9,]+|[^\W\d][\w]*)\]$/
+  const parameterRegexPart = '^([\\w]+)' //something
+
+  const numbersWithCommas = '([0-9,]+)'; 
+  const stringInBrackets = '([^\W\\d][\\w]*)'; 
+
+  const regexString = `${parameterRegexPart}\\[(${numbersWithCommas}|${stringInBrackets})\\]$`;
+  const regex = new RegExp(regexString);
+
+  const match = input.match(regex);
+  if (match) {
+      return { parameter: match[1], value: match[2] };
+  }
+  // error
+  return { parameter: '!!!', value: 'nfg' };
+}
+
 export class RuleProcessor {
   constructor(private rules: Rule[]) {}
 
@@ -27,18 +47,10 @@ export class RuleProcessor {
     return false;
   }
   
-  private parseTest(input: string): { parameter: string, value: string } {
-    const regex = /^(\w+)\[(\w+)\]$/; // something[else]
-    const match = input.match(regex);
-    if (match) {
-        return { parameter: match[1], value: match[2] };
-    }
-    // error
-    return { parameter: '!!!', value: 'nfg' };
-  }
+
 
   private expressionEvaluator(condition: string, fileMetadata: FileMetadata): boolean {
-    const { parameter, value } = this.parseTest(condition);
+    const { parameter, value } = parseTest(condition);
     let answer = false;
     switch(parameter) {
       case '!!!':
@@ -70,13 +82,26 @@ export class RuleProcessor {
   private frontmatterTest = ( property: string, value: string, fileMetadata: FileMetadata) => {
     const propVal = fileMetadata.frontmatter[property];
 
-    //From the frontmatter with Boolean checkbox type the value will return for example {{{true}}}
-    //and from the query we will get {{“true”}}}
-    if(typeof propVal === "boolean"){
+    //A value will be returned from the frontmatter property with the checkbox type, for example: {{{true}}}
+    //after parsing the query we get {{“true”}}}
+    //
+    //A value will be returned from the frontmatter property with the number type, for example: {{{5}}}
+    //after parsing the query we get {{“5”}}}
+
+    if(typeof propVal === "boolean" ){
       return String(propVal) === value
     }
 
+    if(typeof propVal === "number"){
+      return propVal === this.parseInt(value)
+    }
+   
     return value === (Array.isArray(propVal) ? propVal[0] : propVal);
+  }
+
+  private parseInt(intStr:string){
+    const intStrSeparatedByDot = intStr.replace(",", ".")
+    return Number(intStrSeparatedByDot)
   }
 
   private ruleMatches(rule: Rule, fileMetadata: FileMetadata): boolean {

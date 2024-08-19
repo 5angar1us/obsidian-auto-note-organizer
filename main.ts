@@ -1,7 +1,7 @@
 import { MarkdownView, Plugin, TFile, getAllTags, Notice, TAbstractFile, normalizePath, debounce } from 'obsidian';
-import { DEFAULT_SETTINGS, AutoNoteMoverSettings, AutoNoteMoverSettingTab } from 'settings/settings';
-import { fileMove, getTriggerIndicator, isFmDisable } from 'utils/Utils';
-import { RuleProcessor, Rule, FileMetadata } from 'utils/RuleProcessor'
+import { DEFAULT_SETTINGS, AutoNoteMoverSettings, AutoNoteMoverSettingTab } from 'src/settings/settings';
+import { fileMove, getTriggerIndicator, isFmDisable } from 'src/utils/Utils';
+import { RuleProcessor, Rule, FileMetadata } from 'src/utils/RuleProcessor'
 export default class AutoNoteMover extends Plugin {
 	settings: AutoNoteMoverSettings;
 

@@ -1,8 +1,8 @@
 import AutoNoteMover from 'main';
 import { App, PluginSettingTab, Setting, ButtonComponent } from 'obsidian';
 
-import { FolderSuggest } from 'suggests/file-suggest';
-import { arrayMove } from 'utils/Utils';
+import { FolderSuggest } from 'src/suggests/file-suggest';
+import { arrayMove } from 'src/utils/Utils';
 
 export interface FolderTagPattern {
 	folder: string;

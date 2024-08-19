@@ -76,7 +76,6 @@ export class RuleProcessor {
   private titleTest = (title: string, fileMetadata: FileMetadata) => new RegExp(title).test(fileMetadata.title);
   private hasFrontmatterTest = ( property: string, fileMetadata: FileMetadata) => {
     const propVal = fileMetadata.frontmatter[property];
-
     return !!(Array.isArray(propVal) ? propVal[0] : propVal);
   }
   private frontmatterTest = ( property: string, value: string, fileMetadata: FileMetadata) => {

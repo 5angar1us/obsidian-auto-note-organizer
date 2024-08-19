@@ -64,10 +64,18 @@ export class RuleProcessor {
   private titleTest = (title: string, fileMetadata: FileMetadata) => new RegExp(title).test(fileMetadata.title);
   private hasFrontmatterTest = ( property: string, fileMetadata: FileMetadata) => {
     const propVal = fileMetadata.frontmatter[property];
+
     return !!(Array.isArray(propVal) ? propVal[0] : propVal);
   }
   private frontmatterTest = ( property: string, value: string, fileMetadata: FileMetadata) => {
     const propVal = fileMetadata.frontmatter[property];
+
+    //From the frontmatter with Boolean checkbox type the value will return for example {{{true}}}
+    //and from the query we will get {{“true”}}}
+    if(typeof propVal === "boolean"){
+      return String(propVal) === value
+    }
+
     return value === (Array.isArray(propVal) ? propVal[0] : propVal);
   }
 

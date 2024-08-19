@@ -43,10 +43,16 @@ esbuild.build({
 		'@codemirror/view',
 		...builtins],
 	format: 'cjs',
-	watch: !prod,
-	target: 'es2016',
+	target: 'es2020',
 	logLevel: "info",
 	sourcemap: prod ? false : 'inline',
 	treeShaking: true,
 	outfile: 'main.js',
-}).catch(() => process.exit(1));
+})
+.then((r) => {
+    console.log('✨ Build succeeded.');
+
+    r.watch();
+    console.log('watching...');
+  })
+.catch(() => process.exit(1));
